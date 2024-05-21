@@ -36,9 +36,9 @@ app.post('/keycloak-events', async (req, res) => {
     // Extract data from the webhook event
     const { id, email, userName, firstName, lastName, attributes } = event;
 
-    // Prepare the entity data for the API request
-    const entity = {
-        id: id, // Generate a new UUID if id is not provided
+    // Prepare the catalogItem data for the API request
+    const catalogItem = {
+        id: id, 
         stereotype: 'ET_PERSON',
         catalogState: 'APPROVED', // Assuming a default state
         attributes: [
@@ -62,13 +62,13 @@ app.post('/keycloak-events', async (req, res) => {
         ]
     };
 
-    console.log('Prepared entity:', entity);
+    console.log('Prepared catalogItem:', catalogItem);
 
     try {
         const token = await fetchAccessToken();
         const response = await axios.post(
             `http://domain-service:40019/api/tenants/${TENANT_ID}/repositories/${REPOSITORY_ID}/stages/common/catalogItems`,
-            JSON.stringify(entity), // Convert the entity to JSON string
+            JSON.stringify(catalogItem), // Convert the entity to JSON string
             {
                 headers: {
                     'Content-Type': 'application/json',
